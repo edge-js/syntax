@@ -120,7 +120,8 @@ There are different ways to write **Tags** and **Mustache** blocks and this guid
 )
 ```
 
-**VALID**
+**INVALID**
+The opening brace must be in it's own line.
 
 ```
 @if
@@ -164,7 +165,8 @@ The inline tags doesn't contain any childs and hence requires no `@end` statemen
 )
 ```
 
-**VALID**
+**INVALID**
+The opening brace must be in it's own line.
 
 ```
 @include
@@ -253,31 +255,6 @@ The backslash `\` has a special meaning in Javascript, that's why we make use of
 ```
 @@if(username)
 @endif
-```
-
-yields
-
-```json
-[
-  {
-    "type": "raw",
-    "value": "@if(username)",
-    "lineno": 1
-  },
-  {
-    "type": "newline",
-    "lineno": 1
-  },
-  {
-    "type": "raw",
-    "value": "@endif",
-    "lineno": 2
-  },
-  {
-    "type": "newline",
-    "lineno": 2
-  }
-]
 ```
 
 In the same fashion, the mustache braces can be escaped using `@`.
