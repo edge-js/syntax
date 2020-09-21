@@ -1,3 +1,5 @@
+<div align="center"><img src="https://res.cloudinary.com/adonis-js/image/upload/q_100/v1600679850/edge-banner_wao6ex.png" width="600px"></div>
+
 # Edge syntax
 
 This repo is a living document which outlines the **whitelisted** syntax for Edge template engine. 
@@ -10,7 +12,7 @@ Edge attempts to optimize for following.
 2. Easier to type
 3. Unified
 4. Work with any markup language
-
+5. Respect newlines & whitespace
 
 ### Keep syntax closer to Javascript
 We do not want you to learn a new syntax when working with Edge. Almost every Javascript expression is supported by Edge and works as if you are writing Javascript.
@@ -65,12 +67,16 @@ It is relative easier to type Edge primitives over many other template engines. 
 
 ### Unified
 
-Their is no custom vocabulary in Edge for every different thing. Everything revolves around the concept of `Tags`. Logical entities like `@if`, `@else` to `@components` is a tag.
+Their is no custom vocabulary in Edge for every different thing. Everything revolves around the concept of `Tags`. Logical entities like `@if`, `@else` to `@component` is a tag.
 
 ### Work with any markup language
 
 Edge itself is not tied to HTML like [MarkoJs](https://markojs.com/). You can write any markup language inside Edge and it will output it consistently by preserving the whitespaces and newlines.
 
+
+### Respect newlines & whitespace
+
+Since Edge can be used with any markup language, we should be sensitive with the whitespace and the newlines. One should be able to use Edge to generate a YAML file with proper indentation and new lines.
 
 --- 
 
@@ -147,9 +153,8 @@ The opening of the tag must be in it's own line and so do the closing one.
 @endif
 ```
 
-
 ### Tags (inline)
-The inline tags doesn't contain any childs and hence requires no `@end` statement.
+The inline tags doesn't contain any children and hence requires no `@end` statement is required.
 
 **VALID**
 
@@ -166,7 +171,7 @@ The inline tags doesn't contain any childs and hence requires no `@end` statemen
 ```
 
 **INVALID**
-The opening brace must be in it's own line.
+The opening brace must be in its own line.
 
 ```
 @include
@@ -183,15 +188,14 @@ At times block level tags can work fine without any body inside them. To keep th
 **NORMAL**
 
 ```
-@component('title')
-  <h1> Hello world </h1>
+@component('button', text = 'Submit')
 @endcomponent
 ```
 
 **SELF CLOSED**
 
 ```
-@!component('title', title = '<h1> Hello world </h1>')
+@!component('button', text = 'Submit')
 ```
 
 
@@ -263,4 +267,88 @@ In the same fashion, the mustache braces can be escaped using `@`.
 
 ```
 Hello @{{ username }}
+```
+
+## Comments
+
+The comments in Edge disappears before the template is rendered.
+
+Comment starts with a **double curly brace** and then immediately followed by two dashes `--`
+
+```
+{{-- This is a comment --}}
+``` 
+
+Comments can also appear inline with other text. For example:
+
+```
+Hello world {{-- Greeting --}}
+```
+
+```
+{{-- Greet user --}} Hello {{ username }}
+```
+
+**MULTILINE COMMENT**
+
+```
+{{--
+ This is a multiline comment
+--}}
+```
+
+**INVALID**
+
+The `dashes (--)` must in the same line as the opening and the closing curly braces.
+
+```
+{{
+--
+ This is a multiline comment
+--
+}}
+
+```
+
+## Swallow new lines
+
+Since tags are written in their own line, they can create unnecessary some newlines. Based upon the desired outcome, you can remove the newlines after a tag by using the tilde `~` expression.
+
+### WITHOUT TILDE
+
+**TEMPLATE**
+
+```
+<p> Hello
+@if(username)
+ {{ username }}
+@endif
+</p>
+```
+
+**OUTPUT**
+
+```
+<p> Hello
+ virk
+</p>
+```
+
+
+### WITH TILDE
+
+**TEMPLATE**
+
+```
+<p>Hello
+@if(username)~
+ {{ username }}
+@endif~
+</p>
+```
+
+**OUTPUT**
+
+```
+<p>Hello virk</p>
 ```
