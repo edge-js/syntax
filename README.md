@@ -65,9 +65,16 @@ It is relative easier to type Edge primitives over many other template engines. 
 @endif
 ```
 
+Or even shorter 
+
+```
+@if(variable)
+@end
+```
+
 ### Unified
 
-Their is no custom vocabulary in Edge for every different thing. Everything revolves around the concept of `Tags`. Logical entities like `@if`, `@else` to `@component` is a tag.
+There is no custom vocabulary in Edge for every different thing. Everything revolves around the concept of `Tags`. Logical entities like `@if`, `@else` and tags like `@include`, `@component` all are tags.
 
 ### Work with any markup language
 
@@ -308,6 +315,19 @@ The `dashes (--)` must in the same line as the opening and the closing curly bra
 --
 }}
 
+```
+
+## End using shorthand `@end`
+
+The `@end` keyword can be used in place of using `@end<tagName>`. For example:
+
+```
+@if(username)
+@end
+
+@component('button')
+  <p> Foo </p>
+@end
 ```
 
 ## Swallow new lines
